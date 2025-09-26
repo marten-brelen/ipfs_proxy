@@ -1,4 +1,3 @@
-// app/api/ipfs/[...slug]/route.ts
 import type { NextRequest } from "next/server";
 import mime from "mime-types";
 
@@ -33,8 +32,9 @@ function inferContentType(filename: string, fallback?: string) {
   return (mime.lookup(filename) || fallback || "application/octet-stream").toString();
 }
 
-async function handler(req: NextRequest, { params }: { params: { slug: string[] } }) {
+async function handler(req: NextRequest, ctx: { params: Promise<{ slug: string[] }> }) {
   const reqUrl = new URL(req.url);
+  const params = await ctx.params;
   const slug = params.slug ?? [];
   if (slug.length === 0) {
     return new Response("Usage: /api/ipfs/<CID>[/path/to/file]?filename=yourfile.pptx", { status: 400 });
@@ -81,7 +81,7 @@ async function handler(req: NextRequest, { params }: { params: { slug: string[] 
   headers.set("Access-Control-Expose-Headers", "Content-Length, Content-Type, Accept-Ranges, ETag");
 
   if (!headers.has("Cache-Control")) {
-    // Safe because CIDs are immutable; adjust if you point at IPNS later
+    // Safe because CIDs are immutable; adjust if you point at IPFS later
     headers.set("Cache-Control", "public, max-age=31536000, immutable");
   }
 
