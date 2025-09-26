@@ -1,0 +1,6 @@
+{
+    "routes": [
+      { "src": "^/ipfs/(.*)$", "dest": "/api/ipfs/$1" }
+    ]
+  }
+  
