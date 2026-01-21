@@ -5,7 +5,7 @@ const base = (process.argv[3] || process.env.IPFS_PROXY_BASE || "http://localhos
 const filename = process.argv[4] || "";
 
 const proxyUrl =
-  `${base}/grove?uri=${encodeURIComponent(lensUri)}` +
+  `${base}/api/grove?uri=${encodeURIComponent(lensUri)}` +
   (filename ? `&filename=${encodeURIComponent(filename)}` : "");
 
 async function run() {
